@@ -1,13 +1,27 @@
 import os, shutil
+from pathlib import Path
+
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import Checkbutton, BooleanVar, Label
+from tkinter import filedialog, messagebox
 
+from settings.config import Config
 
-GUI_WIDTH = 1200
+GUI_WIDTH = 1300
 GUI_HEIGHT = 800
 CANVAS_WIDTH = 850
 CANVAS_HEIGHT = 700
+
+window_color = Config.window_color
+
+OUTPUT_PATH = Path(__file__).parent
+ASSETS_PATH = OUTPUT_PATH / Path(r"/Users/chanbak/py_workplace/GalleryGenius/GalleryGenius/figma_gui/build/assets/frame0")
+
+def relative_to_assets(path: str) -> Path:
+    return ASSETS_PATH / Path(path)
 
 class ImageMoverApp:
     def __init__(self, root) -> None:

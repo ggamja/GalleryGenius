@@ -8,16 +8,24 @@ from pathlib import Path
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-
+from tkinter import Checkbutton, BooleanVar, Label
+from tkinter import filedialog, messagebox
+import os
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"/Users/chanbak/py_workplace/easy_chu_figma_gui/build/assets/frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"/Users/chanbak/py_workplace/GalleryGenius/GalleryGenius/figma_gui/build/assets/frame0")
 
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+def choose_image_path():
+    image_folder_path = filedialog.askdirectory()
+    if image_folder_path:
+        image_directory_label.config(text=image_folder_path)
+        # load_images(image_folder_path)
 
+            
 window = Tk()
 
 window.geometry("1300x800")
@@ -110,7 +118,7 @@ canvas.create_text(
     68.0,
     165.0,
     anchor="nw",
-    text="888888",
+    text="8888",
     fill="#000000",
     font=("Inter", 13 * -1)
 )
@@ -119,7 +127,7 @@ canvas.create_text(
     133.0,
     165.0,
     anchor="nw",
-    text="888888",
+    text="8888",
     fill="#000000",
     font=("Inter", 13 * -1)
 )
@@ -155,7 +163,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=choose_image_path,
     relief="flat"
 )
 button_1.place(
@@ -239,7 +247,7 @@ canvas.create_text(
 )
 
 canvas.create_text(
-    44.0,
+    45.0,
     223.0,
     anchor="nw",
     text="Q",
@@ -293,7 +301,7 @@ canvas.create_text(
 )
 
 canvas.create_text(
-    44.0,
+    46.0,
     261.0,
     anchor="nw",
     text="E",
@@ -320,7 +328,7 @@ canvas.create_text(
 )
 
 canvas.create_text(
-    44.0,
+    46.0,
     280.0,
     anchor="nw",
     text="R",
@@ -391,14 +399,14 @@ canvas.create_text(
     font=("Inter", 13 * -1)
 )
 
-canvas.create_text(
-    18.0,
-    99.0,
-    anchor="nw",
-    text="Choose Directory",
-    fill="#000000",
-    font=("Inter", 10 * -1)
-)
+# canvas.create_text(
+#     18.0,
+#     99.0,
+#     anchor="nw",
+#     text="Choose Directory",
+#     fill="#000000",
+#     font=("Inter", 10 * -1)
+# )
 
 image_image_3 = PhotoImage(
     file=relative_to_assets("image_3.png"))
@@ -407,5 +415,88 @@ image_3 = canvas.create_image(
     421.0,
     image=image_image_3
 )
+
+########################################################################
+# self made
+
+image_directory_label = Label(
+    text="Choose Directory",
+    font=("Inter", 10 * -1),
+    background="#F1F1F1",
+    foreground="#000000",
+    anchor="nw"
+)
+image_directory_label.place(
+    x=18.0,
+    y=99.0
+)
+
+
+checkbtn_q_var = BooleanVar()
+checkbtn_w_var = BooleanVar()
+checkbtn_e_var = BooleanVar()
+checkbtn_r_var = BooleanVar()
+checkbtn_state_dict = {
+    'q': checkbtn_q_var,
+    'w': checkbtn_w_var,
+    'e': checkbtn_e_var,
+    'r': checkbtn_r_var,
+}
+for var in checkbtn_state_dict.values():
+    var.set(True)
+
+checkbtn_q = Checkbutton(
+    borderwidth=1,
+    highlightthickness=1,
+    command=lambda: print("checkbtn_q clicked"),
+    relief="flat",
+    variable=checkbtn_q_var,
+    background="#F1F1F1",
+)
+checkbtn_q.place(
+    x=18.5,
+    y=221.0,
+)
+
+checkbtn_w = Checkbutton(
+    borderwidth=1,
+    highlightthickness=1,
+    command=lambda: print("checkbtn_w clicked"),
+    relief="flat",
+    variable=checkbtn_w_var,
+    background="#F1F1F1",
+)
+checkbtn_w.place(
+    x=18.5,
+    y=240.0,
+)
+
+checkbtn_e = Checkbutton(
+    borderwidth=1,
+    highlightthickness=1,
+    command=lambda: print("checkbtn_e clicked"),
+    relief="flat",
+    variable=checkbtn_e_var,
+    background="#F1F1F1",
+)
+checkbtn_e.place(
+    x=18.5,
+    y=259.0,
+)
+
+checkbtn_r = Checkbutton(
+    borderwidth=1,
+    highlightthickness=1,
+    command=lambda: print("checkbtn_r clicked"),
+    relief="flat",
+    variable=checkbtn_r_var,
+    background="#F1F1F1",
+)
+checkbtn_r.place(
+    x=18.5,
+    y=278.0,
+)
+
+################################################################
 window.resizable(False, False)
 window.mainloop()
