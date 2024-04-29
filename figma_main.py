@@ -27,6 +27,7 @@ class ImageMoverApp:
         self.root = root
         self.root.geometry(f"{GUI_WIDTH}x{GUI_HEIGHT}")
         self.root.configure(bg=Config.window_color)
+        # self.root.bind("<Configure>", self.resize_canvas_position)
         
         
         self.image_folder_path = ""
@@ -61,10 +62,10 @@ class ImageMoverApp:
         self.selected_image_extensions = self.selected_image_extensions + tuple(ext.upper() for ext in self.selected_image_extensions)
         
         self.setup_ui()
-        # self.bind_keyboard()
+        self.bind_keyboard()
         
-        # self.image_folder_path = "/Users/chanbak/Downloads/test_folder"
-        # self.load_images()
+        self.image_folder_path = "/Users/chanbak/Downloads/test_folder"
+        self.load_images()
         
     def setup_ui(self):
         main_canvas = Canvas(self.root, width=GUI_WIDTH, height=GUI_HEIGHT,
@@ -89,12 +90,12 @@ class ImageMoverApp:
             image=self.shortcut_groupbox_border
         )
         
-        self.photo_groupbox_border = PhotoImage(file=relative_to_assets("image_3.png"))
-        main_canvas.create_image(
-            Config.photo_canvas_background_x,
-            Config.photo_canvas_background_y,
-            image=self.photo_groupbox_border
-        )
+        # self.photo_groupbox_border = PhotoImage(file=relative_to_assets("image_3.png"))
+        # main_canvas.create_image(
+        #     Config.photo_canvas_background_x,
+        #     Config.photo_canvas_background_y,
+        #     image=self.photo_groupbox_border
+        # )
         
         self.simple_button_image = PhotoImage(
             file=relative_to_assets("button_1.png")
@@ -104,7 +105,7 @@ class ImageMoverApp:
         self.photo_canvas = Canvas(
             main_canvas, 
             width=Config.canvas_width, height=Config.canvas_height,
-            bg="#eeeeee",
+            bg=Config.canvas_background_color,
             bd=0, highlightthickness=0, relief='ridge'
         )
         self.photo_canvas.place(
@@ -116,8 +117,24 @@ class ImageMoverApp:
         self.setup_sidebar_img_widget_setting()
         self.setup_sidebar_shortcut_text_setting()
         self.setup_sidebar_shortcut_widget_setting()
+    
+    # def resize_canvas_position(self, event):
+    #     new_window_width = event.width
+    #     new_window_height = event.height
         
+    #     # 기존 : giu = 신규 : new
+    #     new_canvas_x = Config.photo_canvas_background_x * new_window_width / GUI_WIDTH + \
+    #                     - (Config.photo_canvas_background_x // 2)
+    #     new_canvas_y = Config.photo_canvas_background_y * new_window_height / GUI_HEIGHT + \
+    #                     - (Config.photo_canvas_background_y // 2)   
         
+    #     self.photo_canvas.delete("all")
+    #     self.photo_canvas.place(
+    #         x=new_canvas_x,
+    #         y=new_canvas_y,
+    #     )
+        # self.show_current_image()
+              
     def setup_sidebar_img_text_setting(self):
         self.main_canvas.create_text(
             15.0, 17.0,
@@ -231,7 +248,7 @@ class ImageMoverApp:
         self.image_index_spinbox.bind("<Return>", self.handle_spinbox_return)
         
         self.image_total_count_label = Label(
-            text="99999", anchor="nw", font=("Inter", 13 * -1),
+            text="-", anchor="nw", font=("Inter", 13 * -1),
             background=Config.sidebar_color,
             foreground=Config.text_color
         )
@@ -563,7 +580,8 @@ class ImageMoverApp:
         
     def load_images(self):
         self.image_files = [f for f in os.listdir(self.image_folder_path) if f.endswith(self.selected_image_extensions)]
-        self.total_images_label['text'] = f"   /  {len(self.image_files)}"
+        self.image_total_count_label['text'] = f"{len(self.image_files)}"
+        
         self.init_spinbox()
         if self.image_files:
             self.show_current_image()
@@ -578,7 +596,7 @@ class ImageMoverApp:
     
     def show_current_image(self):
         if self.image_files:
-            self.canvas.delete("all")
+            self.photo_canvas.delete("all")
             
             current_image_file = self.image_files[self.current_img_idx-1]
             current_image_path = os.path.join(self.image_folder_path, current_image_file)
@@ -586,11 +604,13 @@ class ImageMoverApp:
             image = Image.open(current_image_path)
             image = image.rotate(self.angle, expand=True)
             # image = image.resize((CANVAS_WIDTH, CANVAS_HEIGHT), Image.ANTIALIAS)
-            photo = ImageTk.PhotoImage(image)
-            self.canvas.create_image(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, image=photo)
-            self.canvas.image = photo
+            # image.thumbnail((Config.canvas_width, Config.canvas_height))
             
-            self.current_image_label.config(text="현재 파일명 : " + current_image_file)
+            photo = ImageTk.PhotoImage(image)
+            self.photo_canvas.create_image(Config.canvas_width/2, Config.canvas_height/2, image=photo)
+            self.photo_canvas.image = photo
+            
+            self.image_filename_label.config(text=current_image_file)
             # self.current_idx_label.config(text="Image Index : " + str(self.current_img_idx))
             
     def handle_spinbox_return(self, event):
@@ -611,7 +631,7 @@ class ImageMoverApp:
             self.show_current_image()
     
     def init_spinbox(self):
-        self.current_idx_spinbox.config(from_=1, to=len(self.image_files) if self.image_files else 0, increment=1)
+        self.image_index_spinbox.config(from_=1, to=len(self.image_files) if self.image_files else 0, increment=1)
     
 if __name__ == "__main__":
     root = tk.Tk()
