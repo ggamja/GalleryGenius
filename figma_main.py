@@ -28,6 +28,7 @@ class ImageMoverApp:
         self.root.geometry(f"{GUI_WIDTH}x{GUI_HEIGHT}")
         self.root.configure(bg=Config.window_color)
         
+        
         self.image_folder_path = ""
         self.image_files = []
         self.current_img_idx = 1
@@ -100,7 +101,12 @@ class ImageMoverApp:
         )
         
         self.main_canvas = main_canvas
-        self.photo_canvas = Canvas(main_canvas, width=Config.canvas_width, height=Config.canvas_height)
+        self.photo_canvas = Canvas(
+            main_canvas, 
+            width=Config.canvas_width, height=Config.canvas_height,
+            bg="#eeeeee",
+            bd=0, highlightthickness=0, relief='ridge'
+        )
         self.photo_canvas.place(
             x=Config.photo_canvas_background_x-Config.canvas_width // 2,
             y=Config.photo_canvas_background_y-Config.canvas_height // 2,
