@@ -88,10 +88,24 @@ class ImageMoverApp:
             image=self.shortcut_groupbox_border
         )
         
-        self.main_canvas = main_canvas
+        self.photo_groupbox_border = PhotoImage(file=relative_to_assets("image_3.png"))
+        main_canvas.create_image(
+            Config.photo_canvas_background_x,
+            Config.photo_canvas_background_y,
+            image=self.photo_groupbox_border
+        )
+        
         self.simple_button_image = PhotoImage(
             file=relative_to_assets("button_1.png")
         )
+        
+        self.main_canvas = main_canvas
+        self.photo_canvas = Canvas(main_canvas, width=Config.canvas_width, height=Config.canvas_height)
+        self.photo_canvas.place(
+            x=Config.photo_canvas_background_x-Config.canvas_width // 2,
+            y=Config.photo_canvas_background_y-Config.canvas_height // 2,
+        )
+        
         self.setup_sidebar_img_text_setting()
         self.setup_sidebar_img_widget_setting()
         self.setup_sidebar_shortcut_text_setting()

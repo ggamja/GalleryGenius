@@ -1,4 +1,10 @@
 class Config:
+    canvas_width = 800
+    canvas_height = 500
+    
+    photo_canvas_background_x = 746
+    photo_canvas_background_y = 421
+    
     window_color = "#E9E2E2"
     sidebar_color = "#F1F1F1"
     sidebar_width = 200
